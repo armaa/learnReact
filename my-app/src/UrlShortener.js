@@ -1,15 +1,17 @@
 import React from 'react';
 
+import { ShortenerResult } from './ShortenerResult';
+
 export class UrlShortener extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: 'http://www.google.com/',
-      labelValue: '',
+      shortUrl: null,
     };
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
   }
 
@@ -27,8 +29,8 @@ export class UrlShortener extends React.Component {
     });
   }
 
-  showShortUrl = (data) => {
-    this.rootNode.textContent = `Your url has been shortened! ${data.id}`;
+  showShortUrl(data) {
+    this.setState({ shortUrl: data.id });
   }
 
   render() {
@@ -37,10 +39,11 @@ export class UrlShortener extends React.Component {
         <input type="text" value={this.state.value} onChange={this.handleChange} />
         <button onClick={this.handleClick}>Test</button>
         <br />
-        <label className='text-color' ref={(node) => (this.rootNode = node)} value={this.state.labelValue} />
+        <ShortenerResult url={this.state.shortUrl} />
+        {
+          this.state.shortUrl ? <span className="text-color">From span: {this.state.shortUrl}</span> : null
+        }
       </div>
     );
   }
 }
-
-// Key for google shortener: AIzaSyAodPCmmz2fbSodNAydOMSaA5q3pEYsTCA 
